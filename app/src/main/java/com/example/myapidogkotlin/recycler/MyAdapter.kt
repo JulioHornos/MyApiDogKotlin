@@ -6,9 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myapidogkotlin.R
-import com.example.myapidogkotlin.model.Datos
+import com.example.myapidogkotlin.model.DogRespuesta
 
-class MyAdapter (private val dataSet: Datos) : RecyclerView.Adapter<MyView>() {
+class MyAdapter (private val dataSet: DogRespuesta) : RecyclerView.Adapter<MyView>() {
 
     lateinit var myContexto : Context
 
@@ -23,13 +23,13 @@ class MyAdapter (private val dataSet: Datos) : RecyclerView.Adapter<MyView>() {
     }
 
     // Return the size of your dataset (invoked by the layout manager)
-    override fun getItemCount() = dataSet.images!!.size
+    override fun getItemCount() = dataSet.message!!.size
 
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: MyView, position: Int) {
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        val url : String = dataSet.images!![position]
+        val url : String = dataSet.message!![position]
         Glide.with(myContexto)
             .load(url)
             .into(holder.imV1);
