@@ -37,7 +37,8 @@ class MainActivity : AppCompatActivity() {
             bt2.setOnClickListener{
                 val raza = edt2.getText().toString();
                 if (raza.isEmpty()){
-                    Toast.makeText(applicationContext, "Debe seleccionar una raza", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(applicationContext, "Debe seleccionar una raza", Toast.LENGTH_SHORT)
+                        .show();
                     return@setOnClickListener;
                 }
                 myViewModel.devuelveFotos(raza)
@@ -49,7 +50,8 @@ class MainActivity : AppCompatActivity() {
                     //Y el adaptador se lo asignamos al recycler.
                     rvPerros.adapter = myAdapter
                 } else {
-                    Toast.makeText(applicationContext, "No hay fotos de esa raza", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "No hay fotos de esa raza", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
         }
