@@ -6,9 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myapidogkotlin.R
+import com.example.myapidogkotlin.model.Datos
 import com.example.myapidogkotlin.model.DogRespuesta
 
-class MyAdapter (private val dataSet: DogRespuesta) : RecyclerView.Adapter<MyView>() {
+class MyAdapter (private val dataSet: Datos) : RecyclerView.Adapter<MyView>() {
 
     lateinit var myContexto : Context
 
