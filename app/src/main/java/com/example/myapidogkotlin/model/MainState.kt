@@ -6,7 +6,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MainState {
     var cadena = "https://dog.ceo/api/breed/"
-    lateinit var misDatos : Datos
     lateinit var fotosPerrosCargado :  DogRespuesta
 
     suspend fun recuperaFotos(raza: String): Datos {
@@ -20,15 +19,17 @@ class MainState {
         val fotosPerros = call.body()
         if(fotosPerros!=null){
             fotosPerrosCargado = fotosPerros
-            if (fotosPerrosCargado.message!!.size> 10){
+            var misDatos : Datos? = null
+            if (fotosPerrosCargado.message!!.size> 0){
                 var numPaginas :Int  = fotosPerrosCargado.message!!.size/10
                 if (fotosPerrosCargado.message!!.size%10!=0) numPaginas++
                 misDatos = Datos(fotosPerrosCargado.status, numPaginas, 1, mutableListOf())
-                for (i in 0..9){
+                var rango = Math.min(fotosPerrosCargado.message!!.size-1,9)
+                for (i in 0..rango){
                     misDatos.message!!.add (fotosPerrosCargado.message!!.get(i))
                 }
             }
-            return misDatos
+            return misDatos!!
         }else{
             return Datos("no success",null, null, null )
         }
@@ -42,7 +43,7 @@ class MainState {
         if(misDatos.paginaActual!! < misDatos.numPaginas!!){
             fin  = (misDatos.paginaActual!! *10 - 1)
         }else{
-            fin  = fotosPerrosCargado.message!!.size
+            fin  = (fotosPerrosCargado.message!!.size -1)
         }
         for (i in inicio..fin){
             misDatos.message!!.add (fotosPerrosCargado.message!!.get(i))

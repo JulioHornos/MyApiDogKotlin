@@ -49,16 +49,22 @@ class MainActivity : AppCompatActivity() {
                         .show();
                     return@setOnClickListener;
                 }
+                //cargaInicial==0
                 myViewModel.devuelveFotos(raza)
             }
 
 
             myViewModel.datos.observe(this@MainActivity){
                 if(it.status=="success"){
-                    misDatos = it
-                    myAdapter = MyAdapter (it)
-                    //Y el adaptador se lo asignamos al recycler.
-                    rvPerros.adapter = myAdapter
+                    if(it.paginaActual==1){
+                        misDatos = it
+                        myAdapter = MyAdapter (it)
+                        //Y el adaptador se lo asignamos al recycler.
+                        rvPerros.adapter = myAdapter
+                    }else{
+                        myAdapter.notifyItemRangeInserted(it.paginaActual!!*10 , it.message!!.size )
+                    }
+
                 } else {
                     if (cargaInicial!=0)
                         Toast.makeText(applicationContext, "No hay fotos de esa raza", Toast.LENGTH_SHORT)
@@ -71,12 +77,12 @@ class MainActivity : AppCompatActivity() {
             rvPerros.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
-                    var finalSroll : Boolean = mLayout.findLastVisibleItemPosition() == misDatos.message!!.size
-                    if (mLayout.findLastVisibleItemPosition()%10 >=9&&mLayout.findLastVisibleItemPosition()/10==(misDatos.paginaActual!!-1)){
-                      //  Log.i("MI TAG ","Final de scroll")
+                    var finalSroll : Boolean = false ;
+                    if (mLayout.findLastVisibleItemPosition()%10 >=9&&
+                        mLayout.findLastVisibleItemPosition()/10==(misDatos.paginaActual!!-1)){
                         finalSroll = true
                     }
-                    if(finalSroll&& misDatos.paginaActual!! < misDatos.numPaginas!!){
+                    if(finalSroll){
                         Snackbar.make(main, "Si desea recuperar más fotos pulse: ", Snackbar.LENGTH_LONG)
                             .setAction("Cargar más fotos", View.OnClickListener {
                                 myViewModel.scrollFotos(misDatos)
