@@ -11,11 +11,12 @@ class MainState {
     suspend fun recuperaFotos(raza: String): Datos {
         val cadenaFinal = cadena +raza+"/"
         val retrofit = Retrofit.Builder()
-            .baseUrl(cadenaFinal)
+            .baseUrl(cadena) // cadenafinal
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        val call = retrofit.create(DogAPIService::class.java).getFotosPerros()
+        //val call = retrofit.create(DogAPIService::class.java).getFotosPerros()
+        val call = retrofit.create(DogAPIService::class.java).getDogs2(raza)
         val fotosPerros = call.body()
         if(fotosPerros!=null){
             fotosPerrosCargado = fotosPerros
